@@ -11,9 +11,19 @@ and npm install vite
 
 you also might have to npm install react, but i forget
 
+you may also have to install these
+npm install -D @shadcn/ui
+npx shadcn-ui@latest init
+npx shadcn-ui@latest add card
+npx shadcn-ui@latest add button
+npx shadcn-ui@latest add textarea
+npx shadcn-ui@latest add radio-group
+npx shadcn-ui@latest add label
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+npm install @mui/material @emotion/react @emotion/styled @mui/icons-material @fontsource/roboto
+
 then you should be able to cd into the gift-idea-generator/frontend-gift-idea-generator and hit a yarn run dev, then go to the link
 
 if you get errors, you likely need to install tailwind although i was able to do it on a second computer without needing to install this
 
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p

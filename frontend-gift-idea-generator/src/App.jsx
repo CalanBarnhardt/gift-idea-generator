@@ -1,4 +1,17 @@
 import React, { useState } from 'react';
+import {
+  Container,
+  Paper,
+  Typography,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  FormLabel,
+  TextField,
+  Button,
+  Box
+} from '@mui/material';
 
 function App() {
   const [selectedOption, setSelectedOption] = useState('');
@@ -10,10 +23,9 @@ function App() {
       text: 'What does your giftee like to do?',
       options: [
         { value: 'eat', label: 'eat' },
-        { value: 'drink', label: 'drink' },
         { value: 'sleep', label: 'sleep' },
         { value: 'game', label: 'game' },
-        { value: 'repeat', label: 'repeat'}
+        { value: 'repeat', label: 'repeat' }
       ]
     }
   ];
@@ -27,57 +39,62 @@ function App() {
   };
 
   return (
-    <div className="p-8">
-      <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow">
-        <h1 className="text-2xl font-bold mb-6">Quick Survey</h1>
+    <Container maxWidth="md" sx={{ py: 4 }}>
+      <Paper elevation={3} sx={{ p: 4 }}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Quick Survey
+        </Typography>
         
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-4">
-            {questions.map((question) => (
-              <div key={question.id} className="space-y-4">
-                <label className="text-lg font-medium">{question.text}</label>
-                <div className="space-y-2">
-                  {question.options.map((option) => (
-                    <div key={option.value} className="flex items-center space-x-2">
-                      <input
-                        type="radio"
-                        id={option.value}
-                        name="language"
-                        value={option.value}
-                        checked={selectedOption === option.value}
-                        onChange={(e) => setSelectedOption(e.target.value)}
-                        className="form-radio"
-                      />
-                      <label htmlFor={option.value}>{option.label}</label>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 4 }}>
+          {questions.map((question) => (
+            <FormControl key={question.id} fullWidth sx={{ mb: 4 }}>
+              <FormLabel id={`${question.id}-label`} sx={{ mb: 2 }}>
+                {question.text}
+              </FormLabel>
+              <RadioGroup
+                aria-labelledby={`${question.id}-label`}
+                name="language"
+                value={selectedOption}
+                onChange={(e) => setSelectedOption(e.target.value)}
+              >
+                {question.options.map((option) => (
+                  <FormControlLabel
+                    key={option.value}
+                    value={option.value}
+                    control={<Radio />}
+                    label={option.label}
+                  />
+                ))}
+              </RadioGroup>
+            </FormControl>
+          ))}
 
-          <div className="space-y-2">
-            <label htmlFor="feedback" className="text-lg font-medium block">
+          <FormControl fullWidth sx={{ mb: 4 }}>
+            <FormLabel sx={{ mb: 2 }}>
               Please provide any additional feedback:
-            </label>
-            <textarea
-              id="feedback"
+            </FormLabel>
+            <TextField
+              multiline
+              rows={4}
               value={textAnswer}
               onChange={(e) => setTextAnswer(e.target.value)}
-              className="w-full h-32 p-2 border rounded"
               placeholder="Type your answer here..."
+              variant="outlined"
             />
-          </div>
+          </FormControl>
 
-          <button
+          <Button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+            variant="contained"
+            size="large"
+            fullWidth
+            sx={{ mt: 2 }}
           >
             Submit
-          </button>
-        </form>
-      </div>
-    </div>
+          </Button>
+        </Box>
+      </Paper>
+    </Container>
   );
 }
 
