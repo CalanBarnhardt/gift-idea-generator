@@ -27,3 +27,10 @@ then you should be able to cd into the gift-idea-generator/frontend-gift-idea-ge
 
 if you get errors, you likely need to install tailwind although i was able to do it on a second computer without needing to install this
 
+
+
+Backend:
+First run: pip install fastapi uvicorn
+then cd into the backend folder and run uvicorn main:app --reload
+This will make it so the frontend can hit the backend!
+

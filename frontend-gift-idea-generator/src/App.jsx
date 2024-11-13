@@ -30,8 +30,19 @@ function App() {
     }
   ];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    fetch("http://localhost:8000/send-giftee-data", {
+      method: "POST",
+      body: JSON.stringify({
+        selectedOption: selectedOption,
+        textAnswer: textAnswer
+      })
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data.giftIdea); //SOME FRONT END PERSON MAKE THIS GIFT IDEA GET DISPLAYED!! (WILL JUST BE TEXT)
+                                    //Also we probs need to decide how the image gets sent back and when we do that
+      })
     console.log({
       selectedOption,
       textAnswer
