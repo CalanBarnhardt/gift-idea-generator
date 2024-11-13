@@ -9,6 +9,8 @@ it should also give you access to npm, if it doesn't follow this link https://do
 from there all you need to do is run npm install -g yarn
 and npm install vite
 
+you also might have to npm install react, but i forget
+
 then you should be able to cd into the gift-idea-generator/frontend-gift-idea-generator and hit a yarn run dev, then go to the link
 
 if you get errors, you likely need to install tailwind although i was able to do it on a second computer without needing to install this
