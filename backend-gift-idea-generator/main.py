@@ -1,9 +1,10 @@
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from openai import OpenAI
+
 app = FastAPI()
 
-client = OpenAI(api_key="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")
+client = OpenAI(api_key="insert key here")
 def generate_ideas(giftOption, giftText):
     '''
     Args: Inputs from users on the website
@@ -45,5 +46,3 @@ async def hello(request: Request):
     #rn its just the selected option and textAnswer.
     response = generate_ideas(giftee_data['selectedOption'], giftee_data['textAnswer'])
     return {"giftIdea": response}
-
-
