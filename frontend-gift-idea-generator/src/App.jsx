@@ -15,6 +15,11 @@ import {
 
 function App() {
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [gender, setGender] = useState('');
+  const [customGender, setCustomGender] = useState('');
+  const [age, setAge] = useState('');
+  const [relationship, setRelationship] = useState('');
+  const [customRelationship, setCustomRelationship] = useState('');
   const [textAnswer, setTextAnswer] = useState('');
 
   const questions = [
@@ -37,6 +42,9 @@ function App() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         selectedOptions: selectedOptions,
+        gender: gender === 'other' ? customGender : gender,
+        age,
+        relationship: relationship === 'other' ? customRelationship : relationship,
         textAnswer: textAnswer
       })
     }).then(response => response.json())
@@ -45,6 +53,9 @@ function App() {
       });
     console.log({
       selectedOptions,
+      gender: gender === 'other' ? customGender : gender,
+      age,
+      relationship: relationship === 'other' ? customRelationship : relationship,
       textAnswer
     });
   };
@@ -63,7 +74,7 @@ function App() {
         justifyContent: 'center',
         alignItems: 'center',
         minHeight: '100vh',
-        bgcolor: '#f5f5f5', // Optional background color
+        bgcolor: '#f5f5f5',
         padding: 2
       }}
     >
@@ -72,43 +83,103 @@ function App() {
           <Typography variant="h4" component="h1" gutterBottom align="center">
             Quick Survey
           </Typography>
-          
+
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 4 }}>
+            {/* Hobby Dropdown */}
             {questions.map((question) => (
               <FormControl key={question.id} fullWidth sx={{ mb: 4 }}>
-              <InputLabel
-                id={`${question.id}-label`}
-                sx={{
-                  transform: 'translate(0, -8px)', // Moves label further up
-                  transition: 'all 0.3s ease', // Smooth transition for interaction
-                }}
-              >
-                {question.text}
-              </InputLabel>
-              <Select
-                labelId={`${question.id}-label`}
-                multiple
-                value={selectedOptions}
-                onChange={handleChange}
-                renderValue={(selected) => (
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                    {selected.map((value) => (
-                      <Chip key={value} label={value} />
-                    ))}
-                  </Box>
-                )}
-                sx={{ mt: 2 }} // Adds margin between Select and the label
-              >
-                {question.options.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            
+                <InputLabel id={`${question.id}-label`}>{question.text}</InputLabel>
+                <Select
+                  labelId={`${question.id}-label`}
+                  multiple
+                  value={selectedOptions}
+                  onChange={handleChange}
+                  renderValue={(selected) => (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                      {selected.map((value) => (
+                        <Chip key={value} label={value} />
+                      ))}
+                    </Box>
+                  )}
+                  sx={{ mt: 2 }}
+                >
+                  {question.options.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             ))}
 
+            {/* Gender Dropdown */}
+            <FormControl fullWidth sx={{ mb: 4 }}>
+              <InputLabel id="gender-label">Gender</InputLabel>
+              <Select
+                labelId="gender-label"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                sx={{ mt: 2 }}
+              >
+                <MenuItem value="male">Male</MenuItem>
+                <MenuItem value="female">Female</MenuItem>
+                <MenuItem value="other">Other</MenuItem>
+              </Select>
+            </FormControl>
+            {gender === 'other' && (
+              <FormControl fullWidth sx={{ mb: 4 }}>
+                <TextField
+                  value={customGender}
+                  onChange={(e) => setCustomGender(e.target.value)}
+                  placeholder="Specify gender (max 10 characters)"
+                  inputProps={{ maxLength: 10 }}
+                  label="Custom Gender"
+                  variant="outlined"
+                />
+              </FormControl>
+            )}
+
+            {/* Age Input */}
+            <FormControl fullWidth sx={{ mb: 4 }}>
+              <TextField
+                type="number"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                placeholder="Enter age"
+                variant="outlined"
+                label="Age"
+              />
+            </FormControl>
+
+            {/* Relationship Dropdown */}
+            <FormControl fullWidth sx={{ mb: 4 }}>
+              <InputLabel id="relationship-label">Relationship to Recipient</InputLabel>
+              <Select
+                labelId="relationship-label"
+                value={relationship}
+                onChange={(e) => setRelationship(e.target.value)}
+                sx={{ mt: 2 }}
+              >
+                <MenuItem value="friend">Friend</MenuItem>
+                <MenuItem value="family">Family</MenuItem>
+                <MenuItem value="colleague">Colleague</MenuItem>
+                <MenuItem value="other">Other</MenuItem>
+              </Select>
+            </FormControl>
+            {relationship === 'other' && (
+              <FormControl fullWidth sx={{ mb: 4 }}>
+                <TextField
+                  value={customRelationship}
+                  onChange={(e) => setCustomRelationship(e.target.value)}
+                  placeholder="Specify relationship (max 10 characters)"
+                  inputProps={{ maxLength: 10 }}
+                  label="Custom Relationship"
+                  variant="outlined"
+                />
+              </FormControl>
+            )}
+
+            {/* Additional Feedback */}
             <FormControl fullWidth sx={{ mb: 4 }}>
               <TextField
                 multiline
@@ -121,6 +192,7 @@ function App() {
               />
             </FormControl>
 
+            {/* Submit Button */}
             <Button
               type="submit"
               variant="contained"
