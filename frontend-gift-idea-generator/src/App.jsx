@@ -12,8 +12,11 @@ import {
   Box,
   Chip
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 function App() {
+  const theme = useTheme();
+
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [gender, setGender] = useState('');
   const [customGender, setCustomGender] = useState('');
@@ -21,6 +24,8 @@ function App() {
   const [relationship, setRelationship] = useState('');
   const [customRelationship, setCustomRelationship] = useState('');
   const [textAnswer, setTextAnswer] = useState('');
+
+  const [generatedGiftIdeas, setGeneratedGiftIdeas] = useState('');
 
   const questions = [
     {
@@ -142,7 +147,7 @@ function App() {
       })
     }).then(response => response.json())
       .then(data => {
-        console.log(data.giftIdea);
+        setGeneratedGiftIdeas(data.giftIdeas);
       });
     console.log({
       selectedOptions,
@@ -316,8 +321,27 @@ function App() {
             >
               Submit
             </Button>
+            {
+              generatedGiftIdeas &&
+              <Box
+                sx={{
+                  border: `2px solid ${theme.palette.primary.main}`,
+                  borderRadius: '10px',
+                  marginTop: '10px'
+                }}
+              >
+                <Typography align='center' marginTop='20px' fontSize='20px'>
+                  Here are 5 perfect gift ideas! <br></br>
+                </Typography>
+                <Typography align='center' marginTop='10px' marginBottom='20px' fontSize='18px'>
+                  {generatedGiftIdeas}
+                </Typography>
+              </Box>
+            }
           </Box>
         </Paper>
+        <Box>
+        </Box>
       </Container>
     </Box>
   );

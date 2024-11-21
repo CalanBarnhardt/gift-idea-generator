@@ -30,7 +30,7 @@ if you get errors, you likely need to install tailwind although i was able to do
 
 
 Backend:
-First run: pip install fastapi uvicorn
+First run: pip install fastapi uvicorn openai
 then cd into the backend folder and run uvicorn main:app --reload
 This will make it so the frontend can hit the backend!
 
