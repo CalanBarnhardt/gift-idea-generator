@@ -10,7 +10,8 @@ import {
   TextField,
   Button,
   Box,
-  Chip
+  Chip,
+  CircularProgress
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
@@ -24,6 +25,7 @@ function App() {
   const [relationship, setRelationship] = useState('');
   const [customRelationship, setCustomRelationship] = useState('');
   const [textAnswer, setTextAnswer] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const [generatedGiftIdeas, setGeneratedGiftIdeas] = useState('');
 
@@ -135,6 +137,8 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setGeneratedGiftIdeas('');
     fetch("http://localhost:8000/send-giftee-data", {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
@@ -147,6 +151,7 @@ function App() {
       })
     }).then(response => response.json())
       .then(data => {
+        setLoading(false);
         setGeneratedGiftIdeas(data.giftIdeas);
       });
     console.log({
@@ -277,6 +282,8 @@ function App() {
                 <MenuItem value="friend">Friend</MenuItem>
                 <MenuItem value="father">Father</MenuItem>
                 <MenuItem value="mother">Mother</MenuItem>
+                <MenuItem value="son">Son</MenuItem>
+                <MenuItem value="daughter">Daughter</MenuItem>
                 <MenuItem value="brother">Brother</MenuItem>
                 <MenuItem value="sister">Sister</MenuItem>
                 <MenuItem value="grandfather">Grandfather</MenuItem>
@@ -299,7 +306,7 @@ function App() {
             )}
 
             {/* Additional Feedback */}
-            <FormControl fullWidth sx={{ mb: 4 }}>
+            {/* <FormControl fullWidth sx={{ mb: 4 }}>
               <TextField
                 multiline
                 rows={4}
@@ -309,7 +316,7 @@ function App() {
                 variant="outlined"
                 label="Additional Feedback"
               />
-            </FormControl>
+            </FormControl> */}
 
             {/* Submit Button */}
             <Button
@@ -321,6 +328,16 @@ function App() {
             >
               Submit
             </Button>
+            {loading && (
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                sx={{ marginTop: '10px', width: '100%' }} // Ensure the container takes up full width
+              >
+                <CircularProgress size={42} />
+              </Box>
+            )}
             {
               generatedGiftIdeas &&
               <Box
