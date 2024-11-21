@@ -4,8 +4,8 @@ from openai import OpenAI
 
 app = FastAPI()
 
-client = OpenAI(api_key="insert key here")
-def generate_ideas(giftOption, giftText):
+client = OpenAI(api_key="")
+def generate_ideas(giftOptions, gender, age, relationship, giftText):
     '''
     Args: Inputs from users on the website
 
@@ -15,7 +15,16 @@ def generate_ideas(giftOption, giftText):
     
     '''
     model="gpt-4o"
-    prompt = "Here are the selected options: {} and here is the custom text about them. Return a comma-seperated string of 5 gift suggestions. An example could be: 'Toy car, xbox controller, video game, laptop, headphones'. Be creative!".format(giftOption, giftText)
+    prompt = prompt = f"""
+        Return a comma-separated string of 5 gift suggestions.
+        An example could be: 'Toy car, xbox controller, video game, laptop, headphones'.
+        Generate the gift suggestions based on the following information about the person receiving the gift:
+        Hobbies: {giftOptions}
+        Gender: {gender}
+        Age: {age}
+        Relationship to the person giving the gift: {relationship} 
+        Be creative!
+    """.format(giftOptions, giftText)
     response = client.chat.completions.create(
         model=model,
         messages=[
@@ -40,9 +49,12 @@ app.add_middleware(
 async def hello(request: Request):
     giftee_data = await request.json()
     print("It hit the backend!")
-    print(giftee_data['selectedOption'])
-    print(giftee_data['textAnswer'])
-    #JP you can do the openAI stuff here. We should all decide what inputs we have in the frontend that get sent here,
-    #rn its just the selected option and textAnswer.
-    response = generate_ideas(giftee_data['selectedOption'], giftee_data['textAnswer'])
-    return {"giftIdea": response}
+    response = generate_ideas(
+        giftee_data['selectedOptions'], 
+        giftee_data['gender'], 
+        giftee_data['age'], 
+        giftee_data['relationship'], 
+        giftee_data['textAnswer']
+    )
+    print(response)
+    return {"giftIdeas": response}
